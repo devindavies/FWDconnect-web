@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "fwd-base",
+    "production": "fwd-base"
+  }
+}
