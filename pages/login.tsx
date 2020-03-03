@@ -1,85 +1,77 @@
-
-import React, { useState, useEffect, ChangeEvent } from "react";
-import firebase from "firebase/app";
-import "firebase/auth";
-import Link from "next/link";
+import React, { useState, FormEvent } from "react";
 import Router from "next/router";
-import initFirebase from "../services/auth/initFirebase";
+import Layout from "../layout/layout";
+import { login } from "../services/auth";
 
-initFirebase();
+const signin = async (email: string, password: string) => {
+  const response = await fetch("/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
 
-type Inputs = {
-  email: string;
-  password: string;
+  if (response.status !== 200) {
+    throw new Error(await response.text());
+  }
+
+  Router.push("/profile");
 };
 
 function Login() {
-  const initial: Inputs = {
+  const [userData, setUserData] = useState({
     email: "",
-    password: ""
-  };
-  var firstInput: HTMLInputElement | null = null;
+    password: "",
+    error: ""
+  });
 
-  const [inputs, setInputs] = useState(initial);
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setUserData({ ...userData, error: "" });
 
-  const handleSubmit = async (e: ChangeEvent<any>) => {
-    e.preventDefault();
+    const email = userData.email;
+    const password = userData.password;
+
     try {
-      await firebase.auth().signInWithEmailAndPassword(inputs.email, inputs.password);
-      Router.push("/");
+      await signin(email, password);
     } catch (error) {
-      alert(error);
+      console.error(error);
+      setUserData({ ...userData, error: error.message });
     }
-  };
-
-  const handleInputChange = (e: ChangeEvent<any>) => {
-    e.persist();
-    setInputs({
-      ...inputs,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  useEffect(() => {
-    firstInput?.focus();
-  }, []); // [] = run once
+  }
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <p>
-          <label htmlFor="email">email: </label>
+    <Layout>
+      <div className="login">
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="email">Email</label>
+
           <input
-            type="email"
+            type="text"
             id="email"
             name="email"
-            onChange={handleInputChange}
-            value={inputs.email}
-            ref={r => (firstInput = r)}
+            value={userData.email}
+            onChange={event =>
+              setUserData({ ...userData, email: event.target.value })
+            }
           />
-        </p>
-        <p>
-          <label htmlFor="password">password: </label>
+
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
             name="password"
-            onChange={handleInputChange}
-            value={inputs.password}
+            value={userData.password}
+            onChange={event =>
+              setUserData({ ...userData, password: event.target.value })
+            }
           />
-        </p>
-        <p>
-          <button type="submit">[ log in ]</button>
-        </p>
-      </form>
-      <p>
-        {"or "}
-        <Link href="/signup">
-          <a>[ create account ]</a>
-        </Link>
-      </p>
- 
-    </>
+
+          <button type="submit">Login</button>
+
+          {userData.error && <p className="error">Error: {userData.error}</p>}
+        </form>
+      </div>
+    </Layout>
   );
 }
 

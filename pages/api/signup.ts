@@ -1,21 +1,37 @@
-import { query } from "faunadb";
+import { query as q } from "faunadb";
 import { serverClient, serializeFaunaCookie } from "../../services/fauna-auth";
 import { NextApiRequest, NextApiResponse } from "next";
-
-export interface LoginResponse {
-  secret?: string;
-}
+import { LoginResponse } from "./login";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { email, password } = await req.body;
+  const { fname, lname, email, password } = await req.body;
 
   try {
     if (!email || !password) {
       throw new Error("Email and password must be provided.");
     }
+    console.log(`email: ${email} trying to create user.`);
+
+    let user: any;
+
+    try {
+      user = await serverClient.query(
+        q.Create(q.Collection("users"), {
+          credentials: { password },
+          data: { fname, lname, email }
+        })
+      );
+    } catch (error) {
+      console.error("Fauna create user error:", error);
+      throw new Error("User already exists.");
+    }
+
+    if (!user.ref) {
+      throw new Error("No ref present in create query response.");
+    }
 
     const loginRes: LoginResponse = await serverClient.query(
-      query.Login(query.Match(query.Index("users_by_email"), email), {
+      q.Login(user.ref, {
         password
       })
     );

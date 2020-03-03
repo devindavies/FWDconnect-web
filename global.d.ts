@@ -1,1 +1,1 @@
-
+declare module "micro-redirect";

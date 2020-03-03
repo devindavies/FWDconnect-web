@@ -1,13 +1,7 @@
 {
-    "build": {
-      "env": {
-        "FIREBASE_PRIVATE_KEY_ID": "@firebase_private_key_id",
-        "FIREBASE_PRIVATE_KEY": "@firebase_private_key",
-        "FIREBASE_API_KEY": "@firebase_api_key",
-        "FIREBASE_AUTH_DOMAIN": "@firebase_auth_domain",
-        "FIREBASE_CLIENT_ID": "@firebase_client_id",
-        "FIREBASE_DB_URL": "@firebase_db_url",
-        "FIREBASE_PROJECT_ID": "@firebase_project_id"
+  "build": {
+    "env": {
+      "FAUNA_SECRET_KEY": "@fauna_secret_key"
     }
   }
 }
