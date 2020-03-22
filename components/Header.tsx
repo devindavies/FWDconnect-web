@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { logout } from "../services/auth";
+import logout from "../services/auth/logout";
+import Router from "next/router";
 
 interface HeaderProps {
   isLoggedIn?: boolean;
@@ -75,7 +76,17 @@ const Header: React.FC<HeaderProps> = props => {
                   </Link>
                 </p>
                 <p className="control">
-                  <button className="button is-primary" onClick={logout}>
+                  <button
+                    onClick={async () => {
+                      try {
+                        await logout();
+                        Router.push("/login");
+                      } catch (e) {
+                        console.error(e);
+                      }
+                    }}
+                    className="button is-primary"
+                  >
                     Log Out
                   </button>
                 </p>

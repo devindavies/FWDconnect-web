@@ -1,17 +1,29 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const withSass = require("@zeit/next-sass");
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true"
-});
+require("dotenv").config();
 
-console.log({
-  FAUNA_SECRET_KEY: process.env.FAUNA_SECRET_KEY
-});
-
-module.exports = withBundleAnalyzer({
-  target: "serverless",
+module.exports = {
+  target: "experimental-serverless-trace",
+  webpack: (config, { isServer }) => {
+    // Fixes npm packages that depend on `fs` module
+    if (!isServer) {
+      config.node = {
+        fs: "empty"
+      };
+    }
+    return config;
+  },
   env: {
-    FAUNA_SECRET_KEY: process.env.FAUNA_SECRET_KEY
+    FAUNA_SECRET_KEY: process.env.FAUNA_SECRET_KEY,
+    FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
+    FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
+    FIREBASE_DATABASE_URL: process.env.FIREBASE_DATABASE_URL,
+    FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
+    FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
+    FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
+    FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
+    FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY
   },
   ...withSass()
-});
+};

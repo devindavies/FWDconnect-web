@@ -4,23 +4,46 @@ import Document, {
   Main,
   NextScript,
   DocumentContext
-} from 'next/document'
-import React from 'react'
+} from "next/document";
+import React from "react";
+import { get } from "lodash";
 //import { ServerStyleSheet } from 'styled-components'
 //import removeCommentsAndSpacing from '../lib/removeCommentsAndSpacing'
 
-export default class MyDocument extends Document {
-  public static async getInitialProps(ctx: DocumentContext) {
-    const initialProps = await Document.getInitialProps(ctx)
-    return { ...initialProps }
-  }
+interface CustomDocumentProps extends Document {
+  AuthUserInfo: {
+    AuthUser: {
+      id: string;
+      email: string;
+      emailVerified: string;
+    };
+    token: string;
+  };
+}
+export default class CustomDocument extends Document<CustomDocumentProps> {
+  public static getInitialProps = async (ctx: DocumentContext) => {
+    // Get the AuthUserInfo object. This is set if the server-rendered page
+    // is wrapped in the `withAuthUser` higher-order component.
+    const AuthUserInfo = get(ctx, "myCustomData.AuthUserInfo", null);
 
-  public render() {
+    const initialProps = await Document.getInitialProps(ctx);
+    return { ...initialProps, AuthUserInfo };
+  };
+
+  render() {
+    const { AuthUserInfo } = this.props;
     return (
       <Html lang="en">
         <Head>
           <meta charSet="utf-8" />
           <link rel="preconnect" href="https://www.google-analytics.com" />
+          <script
+            id="__MY_AUTH_USER_INFO"
+            type="application/json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(AuthUserInfo, null, 2)
+            }}
+          />
           <meta
             name="description"
             content="FWDchat is a social media app built with React"
@@ -142,6 +165,6 @@ function gtag(){
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }

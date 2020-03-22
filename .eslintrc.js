@@ -31,7 +31,6 @@ module.exports = {
   rules: {
     "react/prop-types": "off",
     "no-useless-catch": "off",
-    "no-return-await": "on",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-use-before-define": ["error", { functions: false }],
     "@typescript-eslint/camelcase": "off",

@@ -1,6 +1,12 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState } from "react";
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 import Router from "next/router";
+import initFirebase from "../services/auth/initFirebase";
 import Layout from "../layout/layout";
+
+initFirebase();
 
 interface State {
   fname: {
@@ -31,6 +37,7 @@ interface State {
 }
 
 function Signup() {
+  const db = firebase.firestore();
   const [userData, setUserData] = useState<State>({
     fname: {
       display: "First Name",
@@ -81,22 +88,24 @@ function Signup() {
       }
     }
 
-    const fname = userData.fname.value;
-    const lname = userData.lname.value;
-    const email = userData.email.value;
-    const password = userData.email.value;
-
     try {
-      const response = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fname, lname, email, password })
-      });
-
-      if (response.status !== 200) {
-        throw new Error(await response.text());
-      }
-
+      await firebase
+        .auth()
+        .createUserWithEmailAndPassword(
+          userData.email.value,
+          userData.password.value
+        );
+      const user = firebase.auth().currentUser;
+      await db
+        .collection("users")
+        .doc(user?.uid)
+        .set({
+          name: {
+            first: userData.fname.value,
+            last: userData.lname.value
+          },
+          email: userData.email.value
+        });
       Router.push("/profile");
     } catch (error) {
       console.error(error);
@@ -117,6 +126,7 @@ function Signup() {
                   id="fname"
                   name="fname"
                   value={userData.fname.value}
+                  autoComplete="given-name"
                   placeholder="First Name"
                   onChange={handleInputChange}
                   className="input"
@@ -128,6 +138,7 @@ function Signup() {
                   id="lname"
                   name="lname"
                   value={userData.lname.value}
+                  autoComplete="family-name"
                   placeholder="Last Name"
                   onChange={handleInputChange}
                   className="input"
@@ -143,6 +154,7 @@ function Signup() {
                   name="email"
                   value={userData.email.value}
                   placeholder="Email Address"
+                  autoComplete="email"
                   onChange={handleInputChange}
                   className="input"
                 />
@@ -157,6 +169,7 @@ function Signup() {
                   name="password"
                   value={userData.password.value}
                   placeholder="Password"
+                  autoComplete="new-password"
                   onChange={handleInputChange}
                   className="input"
                 />
