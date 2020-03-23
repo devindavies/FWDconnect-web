@@ -58,7 +58,7 @@ const Home: NextPage<Props> = (props) => {
   );
 
   const [userData, userLoading, userError] = useDocument(
-    db.collection("users").doc(authUser?.id)
+    authUser && db.collection("users").doc(authUser.id)
   );
 
   const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = async (
