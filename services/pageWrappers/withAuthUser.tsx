@@ -1,14 +1,3 @@
-import React from "react";
-import { AuthUserInfoContext, useFirebaseAuth } from "../auth/hooks";
-import { createAuthUser, createAuthUserInfo } from "../auth/user";
-import { NextPageContext } from "next";
-
-// Gets the authenticated user from the Firebase JS SDK, when client-side,
-// or from the request object, when server-side. Add the AuthUserInfo to
-// context.
-export default (ComposedComponent: any) => {
-  const WithAuthUserComp = (props: any) => {
-    const { AuthUserInfo, ...otherProps } = props;
 /* eslint react/jsx-props-no-spreading: 0 */
 import React from "react";
 import { AuthUserInfoContext, useFirebaseAuth } from "../auth/hooks";
@@ -24,6 +13,7 @@ export interface AuthUserInfo {
   };
   token: string | null;
 }
+
 // Gets the authenticated user from the Firebase JS SDK, when client-side,
 // or from the request object, when server-side. Add the AuthUserInfo to
 // context.
@@ -63,7 +53,7 @@ export default (ComposedComponent: NextPage) => {
       addSession(req, res);
       AuthUserInfo = createAuthUserInfo({
         firebaseUser: req.session.decodedToken,
-        token: req.session.token
+        token: req.session.token,
       });
     } else {
       // If client-side, get AuthUserInfo from stored data. We store it
@@ -101,7 +91,7 @@ export default (ComposedComponent: NextPage) => {
 
     return {
       ...composedInitialProps,
-      AuthUserInfo
+      AuthUserInfo,
     };
   };
 
