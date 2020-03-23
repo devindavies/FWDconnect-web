@@ -10,10 +10,10 @@ import Layout from "../layout/layout";
 import withDato from "../data/datoCms";
 import withAuthUserInfo from "../services/pageWrappers/withAuthUserInfo";
 import withAuthUser, {
-  AuthUserInfo
+  AuthUserInfo,
 } from "../services/pageWrappers/withAuthUser";
 import initFirebase from "../services/auth/initFirebase";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useCollectionData, useDocument } from "react-firebase-hooks/firestore";
 
 initFirebase();
 
@@ -22,12 +22,13 @@ interface Props {
 }
 
 interface Post {
+  id: string;
   user: {
     name: {
       first: string;
       last: string;
     };
-    email: string;
+    id: string;
   };
   content: string;
   datePosted: firebase.firestore.Timestamp;
@@ -36,13 +37,10 @@ interface Post {
 interface FeedState {
   postInput: string;
   commentInput: string;
-  posts: {
-    [x: string]: Post;
-  };
-  [x: string]: any;
+  [x: string]: string;
 }
 
-const Home: NextPage<Props> = props => {
+const Home: NextPage<Props> = (props) => {
   const { AuthUserInfo } = props;
   const authUser = AuthUserInfo?.AuthUser;
   const db = firebase.firestore();
@@ -50,64 +48,46 @@ const Home: NextPage<Props> = props => {
   const [state, setState] = React.useState<FeedState>({
     postInput: "",
     commentInput: "",
-    posts: {}
   });
 
-  const userRef = authUser && db.collection("users").doc(authUser?.id);
+  const [posts, loading, error] = useCollectionData<Post>(
+    db.collection("posts").orderBy("datePosted", "desc"),
+    {
+      idField: "id",
+    }
+  );
 
-  React.useEffect(() => {
-    const unsubscribe = () => {
-      firebase
-        .firestore()
-        .collection("posts")
-        .orderBy("datePosted", "desc")
-        .onSnapshot(snapshot => {
-          if (snapshot.size) {
-            const postList: {
-              [x: string]: Post;
-            } = {};
-            snapshot.forEach(async doc => {
-              const postData = doc.data();
-              const userData = await doc.data().user.get();
-              postList[doc.id] = {
-                user: userData,
-                content: postData.content,
-                datePosted: postData.datePosted
-              };
-            });
-            setState(state => ({
-              ...state,
-              posts: {
-                ...state.posts,
-                ...postList
-              }
-            }));
-          }
-        });
-    };
-    return unsubscribe();
-  }, []);
+  const [userData, userLoading, userError] = useDocument(
+    db.collection("users").doc(authUser?.id)
+  );
 
-  const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = async event => {
+  const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = async (
+    event
+  ) => {
     event.preventDefault();
     const { name, value } = event.target;
     setState({
       ...state,
-      [name]: value
+      [name]: value,
     });
   };
 
-  const submitPost: React.MouseEventHandler<HTMLButtonElement> = async event => {
+  const submitPost: React.MouseEventHandler<HTMLButtonElement> = async (
+    event
+  ) => {
     event.preventDefault();
     const content = state.postInput;
     setState({
       ...state,
-      postInput: ""
+      postInput: "",
     });
     await db.collection("posts").add({
-      user: userRef,
+      user: {
+        name: userData?.data()?.name,
+        id: userData?.id,
+      },
       content: content,
-      datePosted: firebase.firestore.Timestamp.now()
+      datePosted: firebase.firestore.Timestamp.now(),
     });
   };
 
@@ -115,7 +95,7 @@ const Home: NextPage<Props> = props => {
     <Layout isLoggedIn={authUser ? true : false}>
       <div className="section">
         <div className="container">
-          <h1 className="title">FWDconect</h1>
+          <h1 className="title">FWDconnect</h1>
           <h1>
             A simple social media app built using NextJS, Firebase, deployed on
             Now.sh
@@ -152,9 +132,9 @@ const Home: NextPage<Props> = props => {
             </article>
           )}
           {authUser &&
-            Object.keys(state.posts).map((key, i) => {
+            posts?.map((post) => {
               return (
-                <article key={i} className="media">
+                <article key={post.id} className="media">
                   <figure className="media-left">
                     <p className="image is-64x64">
                       <img src="https://bulma.io/images/placeholders/128x128.png" />
@@ -163,12 +143,10 @@ const Home: NextPage<Props> = props => {
                   <div className="media-content">
                     <div className="content">
                       <p>
-                        <strong>{state.posts[key].user.name.first}</strong>{" "}
-                        <small>
-                          {state.posts[key].datePosted.toDate().toUTCString()}
-                        </small>
+                        <strong>{post.user.name.first}</strong>{" "}
+                        <small>{post.datePosted.toDate().toUTCString()}</small>
                         <br />
-                        {state.posts[key].content}
+                        {post.content}
                       </p>
                     </div>
                     <nav className="level is-mobile">

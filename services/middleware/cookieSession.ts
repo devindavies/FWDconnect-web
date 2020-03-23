@@ -18,8 +18,9 @@ export const addSession = (req: any, res: any) => {
     // https://github.com/expressjs/cookie-session#cookie-options
     maxAge: 604800000, // week
     httpOnly: true,
-    overwrite: true
+    overwrite: true,
   });
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   includeSession(req, res, () => {});
 };
 
