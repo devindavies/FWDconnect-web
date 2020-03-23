@@ -6,16 +6,15 @@ export const setSession = async (user: firebase.User | null) => {
     const token = await user.getIdToken();
     return fetch("/api/login", {
       method: "POST",
-      // eslint-disable-next-line no-undef
       headers: new Headers({ "Content-Type": "application/json" }),
       credentials: "same-origin",
-      body: JSON.stringify({ token })
+      body: JSON.stringify({ token }),
     });
   }
 
   // Log out.
   return fetch("/api/logout", {
     method: "POST",
-    credentials: "same-origin"
+    credentials: "same-origin",
   });
 };

@@ -8,30 +8,29 @@ module.exports = {
     "prettier/@typescript-eslint",
     "plugin:import/typescript",
     "plugin:prettier/recommended",
-    "plugin:jsx-a11y/recommended"
+    "plugin:jsx-a11y/recommended",
   ],
   settings: {
     react: {
-      version: "detect"
-    }
+      version: "detect",
+    },
   },
   env: {
     browser: true,
     node: true,
-    es6: true
+    es6: true,
   },
   plugins: ["import", "react", "react-hooks", "@typescript-eslint", "graphql"],
   parserOptions: {
     ecmaFeatures: {
-      jsx: true
+      jsx: true,
     },
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    sourceType: "module" // Allows for the use of imports
+    sourceType: "module", // Allows for the use of imports
   },
   rules: {
     "react/prop-types": "off",
     "no-useless-catch": "off",
-    "no-return-await": "on",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-use-before-define": ["error", { functions: false }],
     "@typescript-eslint/camelcase": "off",
@@ -46,6 +45,6 @@ module.exports = {
     "import/no-cycle": ["warn"],
     "import/no-absolute-path": ["warn"],
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
-  }
+    "react-hooks/exhaustive-deps": "warn",
+  },
 };

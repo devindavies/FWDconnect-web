@@ -1,0 +1,8 @@
+type User @collection(name: "User") {
+  email: String!
+}
+
+type Query {
+  allUsers: [User!]
+  usersByEmail(email: String!): [User!]
+}

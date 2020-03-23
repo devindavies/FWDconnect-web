@@ -6,9 +6,9 @@ export const addSession = (req: any, res: any) => {
   // The first will be used to sign cookies, and the rest to validate them.
   // https://github.com/expressjs/cookie-session#keys
   // TODO: store these in an actual secret
-  let secretCurrent = "secretNMIIEvgIB";
-  let secretPrevious = "secretADANBgk";
-  let sessionSecrets = [secretCurrent, secretPrevious];
+  const secretCurrent = "secretNMIIEvgIB";
+  const secretPrevious = "secretADANBgk";
+  const sessionSecrets = [secretCurrent, secretPrevious];
 
   // Example:
   // https://github.com/billymoon/micro-cookie-session
@@ -18,8 +18,9 @@ export const addSession = (req: any, res: any) => {
     // https://github.com/expressjs/cookie-session#cookie-options
     maxAge: 604800000, // week
     httpOnly: true,
-    overwrite: true
+    overwrite: true,
   });
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   includeSession(req, res, () => {});
 };
 

@@ -1,4 +1,6 @@
+/* eslint react/jsx-props-no-spreading: 0 */
 import React from "react";
+import { get } from "lodash";
 import { AuthUserInfoContext } from "../auth/hooks";
 import { NextPageContext } from "next";
 
@@ -8,7 +10,7 @@ export default (ComposedComponent: any) => {
     const { AuthUserInfo: AuthUserInfoFromSession, ...otherProps } = props;
     return (
       <AuthUserInfoContext.Consumer>
-        {AuthUserInfo => (
+        {(AuthUserInfo) => (
           <ComposedComponent
             {...otherProps}
             AuthUserInfo={AuthUserInfo || AuthUserInfoFromSession}
@@ -18,8 +20,8 @@ export default (ComposedComponent: any) => {
     );
   };
 
-  WithAuthUserInfoComp.getInitialProps = async (ctx: NextPageContext | any) => {
-    const AuthUserInfo = ctx.myCustomData.AuthUserInfo ? ctx.myCustomData.AuthUserInfo: null
+  WithAuthUserInfoComp.getInitialProps = async (ctx: NextPageContext) => {
+    const AuthUserInfo = get(ctx, "myCustomData.AuthUserInfo", null);
 
     // Evaluate the composed component's getInitialProps().
     let composedInitialProps = {};
@@ -29,7 +31,7 @@ export default (ComposedComponent: any) => {
 
     return {
       ...composedInitialProps,
-      AuthUserInfo
+      AuthUserInfo,
     };
   };
 
