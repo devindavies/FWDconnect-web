@@ -1,5 +1,3 @@
-import fetch from "isomorphic-unfetch";
-
 export const setSession = async (user: firebase.User | null) => {
   // Log in.
   if (user) {

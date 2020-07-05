@@ -43,11 +43,6 @@ const Header: React.FC<HeaderProps> = (props) => {
               HOME
             </a>
           </Link>
-          <Link href="/about">
-            <a href="/about" className="menu-item navbar-item">
-              ABOUT
-            </a>
-          </Link>
           {!isLoggedIn ? (
             <div className="navbar-item">
               <div className="field is-grouped">

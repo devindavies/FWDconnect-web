@@ -128,6 +128,10 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
             content="/favicon/ms-icon-144x144.png"
           />
           <meta name="theme-color" content="#ffffff" />
+          <script
+            defer
+            src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+          ></script>
           {/**this.props.gaTrackingId ? (
             <>
               <script

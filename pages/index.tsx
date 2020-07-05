@@ -1,7 +1,4 @@
-import React from "react";
-//import { gql } from "apollo-boost";
-//import { renderMetaTags } from "react-datocms";
-//import { useQuery } from "@apollo/react-hooks";
+import React, { useState } from "react";
 import { NextPage } from "next";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -13,7 +10,7 @@ import withAuthUser, {
   AuthUserInfo,
 } from "../services/pageWrappers/withAuthUser";
 import initFirebase from "../services/auth/initFirebase";
-import { useCollectionData, useDocument } from "react-firebase-hooks/firestore";
+import PostList from "../components/PostList";
 
 initFirebase();
 
@@ -21,22 +18,8 @@ interface Props {
   AuthUserInfo?: AuthUserInfo;
 }
 
-interface Post {
-  id: string;
-  user: {
-    name: {
-      first: string;
-      last: string;
-    };
-    id: string;
-  };
-  content: string;
-  datePosted: firebase.firestore.Timestamp;
-}
-
 interface FeedState {
   postInput: string;
-  commentInput: string;
   [x: string]: string;
 }
 
@@ -47,19 +30,7 @@ const Home: NextPage<Props> = (props) => {
 
   const [state, setState] = React.useState<FeedState>({
     postInput: "",
-    commentInput: "",
   });
-
-  const [posts, loading, error] = useCollectionData<Post>(
-    db.collection("posts").orderBy("datePosted", "desc"),
-    {
-      idField: "id",
-    }
-  );
-
-  const [userData, userLoading, userError] = useDocument(
-    authUser && db.collection("users").doc(authUser.id)
-  );
 
   const handleTextAreaChange: React.ChangeEventHandler<HTMLTextAreaElement> = async (
     event
@@ -82,10 +53,7 @@ const Home: NextPage<Props> = (props) => {
       postInput: "",
     });
     await db.collection("posts").add({
-      user: {
-        name: userData?.data()?.name,
-        id: userData?.id,
-      },
+      user: db.collection("users").doc(authUser?.id),
       content: content,
       datePosted: firebase.firestore.Timestamp.now(),
     });
@@ -131,47 +99,7 @@ const Home: NextPage<Props> = (props) => {
               </div>
             </article>
           )}
-          {authUser &&
-            posts?.map((post) => {
-              return (
-                <article key={post.id} className="media">
-                  <figure className="media-left">
-                    <p className="image is-64x64">
-                      <img src="https://bulma.io/images/placeholders/128x128.png" />
-                    </p>
-                  </figure>
-                  <div className="media-content">
-                    <div className="content">
-                      <p>
-                        <strong>{post.user.name.first}</strong>{" "}
-                        <small>{post.datePosted.toDate().toUTCString()}</small>
-                        <br />
-                        {post.content}
-                      </p>
-                    </div>
-                    <nav className="level is-mobile">
-                      <div className="level-left">
-                        <a className="level-item">
-                          <span className="icon is-small">
-                            <i className="fas fa-reply"></i>
-                          </span>
-                        </a>
-                        <a className="level-item">
-                          <span className="icon is-small">
-                            <i className="fas fa-retweet"></i>
-                          </span>
-                        </a>
-                        <a className="level-item">
-                          <span className="icon is-small">
-                            <i className="fas fa-heart"></i>
-                          </span>
-                        </a>
-                      </div>
-                    </nav>
-                  </div>
-                </article>
-              );
-            })}
+          {authUser && <PostList user={authUser} />}
         </div>
       </div>
     </Layout>

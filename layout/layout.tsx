@@ -1,5 +1,4 @@
 import React from "react";
-import "./styles.scss";
 import Head from "next/head";
 import Header from "../components/Header";
 import { renderMetaTags } from "react-datocms";

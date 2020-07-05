@@ -1,5 +1,5 @@
 import cookieSession from "cookie-session";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse, NextApiHandler } from "next";
 
 export const addSession = (req: any, res: any) => {
   // An array is useful for rotating secrets without invalidating old sessions.
@@ -24,7 +24,7 @@ export const addSession = (req: any, res: any) => {
   includeSession(req, res, () => {});
 };
 
-export default (handler: any) => (
+export default (handler: NextApiHandler) => (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {

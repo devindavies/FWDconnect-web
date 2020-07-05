@@ -2,48 +2,10 @@
 @import '~bulma/sass/utilities/initial-variables';
 @import '~bulma/sass/utilities/functions';
 // BULMA VARIABLE OVER-RIDES
-$primary: #1fd8c5;
-$secondary: #2b2b3a;
-$teal: #1bb4a4;
-$teal-invert: findColorInvert($teal);
-$white-blue: #71c0f4;
-$white-blue-invert: findColorInvert($white-blue);
-$light-blue: #156498;
-$light-blue-invert: findColorInvert($light-blue);
-$dark-blue: #092b41;
-$dark-blue-invert: findColorInvert($dark-blue);
 
-$custom-colors: (
-  'teal': (
-    $teal,
-    $teal-invert
-  ),
-  'white-blue': (
-    $white-blue,
-    $white-blue-invert
-  ),
-  'light-blue': (
-    $light-blue,
-    $light-blue-invert
-  ),
-  'dark-blue': (
-    $dark-blue,
-    $dark-blue-invert
-  )
-);
 $family-primary: 'Montserrat', sans-serif;
 $family-secondary: 'Merriweather', serif;
-$section-padding: 3rem 2rem;
-$navbar-background-color: rgba(0, 0, 0, 0.8);
-$navbar-height: 4rem;
-$navbar-item-img-max-height: 2.5rem;
-$navbar-item-hover-background-color: none;
-$navbar-item-color: hsl(0, 0%, 98%);
-$navbar-item-hover-color: hsl(0, 0%, 98%);
-$button-border-width: 2px;
-$dimensions: 16 24 32 48 64 96 128 256 300;
-$box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.2);
-$footer-background-color: $secondary;
+
 
 @import '~bulma/bulma.sass';
 //@import '~bulma-extensions/bulma-divider/src/sass/index.sass';
@@ -53,119 +15,6 @@ $footer-background-color: $secondary;
 // font-size: 3rem !important;
 //}
 
-.has-text-gradient-slate-teal {
-  background: linear-gradient(to right, #00897b, #00ffe5);
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero.is-fullheight-with-navbar .hero-body.top {
-  align-items: flex-end;
-}
-
-.navbar-burger {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
-.centered {
-  margin: auto;
-}
-
-.padded {
-  padding: 2rem 3.5rem;
-  height: 100%;
-}
-
-.left-padded {
-  padding-left: 3.5rem;
-}
-
-.side-padded {
-  padding: 0 3.5rem;
-}
-
-.top-padded {
-  padding-top: 2rem;
-}
-
-.no-side-padding {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-
-.is-flex-column {
-  display: flex !important;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.has-background-secondary {
-  background-color: $secondary !important;
-}
-
-.display-block {
-  display: block;
-}
-
-.display-none {
-  display: none;
-}
-
-.icon-right-margin {
-  margin-right: 0.5rem;
-}
-
-.modal {
-  padding: 40px;
-}
-
-.title-padding {
-  padding: 8rem 0;
-}
-
-.iframe {
-  height: 600px;
-}
-
-.MyCardElement {
-  height: 40px;
-  padding: 10px 12px;
-  width: 100%;
-  color: #32325d;
-  background-color: white;
-  border: 1px solid transparent;
-  border-radius: 4px;
-
-  box-shadow: 0 1px 3px 0 #e6ebf1;
-  -webkit-transition: box-shadow 150ms ease;
-  transition: box-shadow 150ms ease;
-}
-
-.MyCardElement--focus {
-  box-shadow: 0 1px 3px 0 #cfd7df;
-}
-
-.MyCardElement--invalid {
-  border-color: #fa755a;
-}
-
-.MyCardElement--webkit-autofill {
-  background-color: #fefde5 !important;
-}
-
-.StripeInput {
-  color: #32325d;
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  font-size: 1em;
-}
-
-.StripeInput::placeholder {
-  color: #aab7c4;
-}
-
-.StripeInput:focus {
-  box-shadow: 0 1px 3px 0 #cfd7df;
-  outline: none;
+.text-link {
+  cursor: pointer;
 }
