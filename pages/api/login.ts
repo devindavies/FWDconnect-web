@@ -32,4 +32,4 @@ const handler = async (req: any, res: NextApiResponse) => {
   }
 };
 
-export default commonMiddleware(handler);
+export default commonMiddleware(handler as any);
