@@ -7,17 +7,16 @@ import {
   useDocumentData,
   useCollectionData,
 } from "react-firebase-hooks/firestore";
-
-import { AuthUserInfo } from "../services/pageWrappers/withAuthUser";
 import { FirebasePost, FirebaseUser, FirebaseLike } from "../types";
 import CommentList from "./CommentList";
+import { useUser } from "../utils/auth/useUser";
 
 interface PostProps {
   postRef: FirebasePost;
-  authUser?: AuthUserInfo["AuthUser"];
 }
 
 const Post = (props: PostProps) => {
+  const { user: authUser } = useUser();
   const db = firebase.firestore();
   const [user, loading, error] = useDocumentData<FirebaseUser>(
     db.collection("users").doc(props.postRef.user.id),
@@ -51,7 +50,7 @@ const Post = (props: PostProps) => {
       .doc(props.postRef.id)
       .collection("comments")
       .add({
-        user: db.collection("users").doc(props.authUser?.id),
+        user: db.collection("users").doc(authUser?.id),
         content: input,
         datePosted: firebase.firestore.Timestamp.now(),
       });
@@ -61,7 +60,7 @@ const Post = (props: PostProps) => {
     event
   ) => {
     event.preventDefault();
-    const likeRef = likes?.find((like) => like.user.id === props.authUser?.id);
+    const likeRef = likes?.find((like) => like.user.id === authUser?.id);
     if (likeRef) {
       await db
         .collection("posts")
@@ -75,7 +74,7 @@ const Post = (props: PostProps) => {
         .doc(props.postRef.id)
         .collection("likes")
         .add({
-          user: db.collection("users").doc(props.authUser?.id),
+          user: db.collection("users").doc(authUser?.id),
         });
     }
   };
@@ -84,7 +83,7 @@ const Post = (props: PostProps) => {
     <article key={props.postRef.id} className="media">
       <figure className="media-left">
         <p className="image is-64x64">
-          <img src="https://bulma.io/images/placeholders/128x128.png" />
+          <img alt="" src="https://bulma.io/images/placeholders/128x128.png" />
         </p>
       </figure>
       <div className="media-content">
@@ -106,7 +105,10 @@ const Post = (props: PostProps) => {
         <article className="media">
           <figure className="media-left">
             <p className="image is-64x64">
-              <img src="https://bulma.io/images/placeholders/128x128.png" />
+              <img
+                alt=""
+                src="https://bulma.io/images/placeholders/128x128.png"
+              />
             </p>
           </figure>
           <div className="media-content">

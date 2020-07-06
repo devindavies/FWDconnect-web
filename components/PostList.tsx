@@ -5,13 +5,8 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import { FirebasePost } from "../types";
 import Post from "./Post";
-import { AuthUserInfo } from "../services/pageWrappers/withAuthUser";
 
-type Props = {
-  user?: AuthUserInfo["AuthUser"];
-};
-
-const PostList = (props: Props) => {
+const PostList = () => {
   const [posts, loading, error] = useCollectionData<FirebasePost>(
     firebase.firestore().collection("posts").orderBy("datePosted", "desc"),
     {
@@ -21,7 +16,7 @@ const PostList = (props: Props) => {
   return (
     <>
       {posts?.map((post) => (
-        <Post key={post.id} postRef={post} authUser={props.user} />
+        <Post key={post.id} postRef={post} />
       ))}
     </>
   );

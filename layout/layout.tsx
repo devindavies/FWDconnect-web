@@ -50,11 +50,7 @@ const faviconMetaTags = [
   },
 ];
 
-interface LayoutProps {
-  isLoggedIn?: boolean;
-}
-
-const Layout: React.FC<LayoutProps> = (props) => {
+const Layout: React.FC = (props) => {
   return (
     <div>
       <Head>
@@ -69,7 +65,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
           {renderMetaTags(faviconMetaTags)}
         </>
       </Head>
-      <Header isLoggedIn={props.isLoggedIn} />
+      <Header />
       {props.children}
     </div>
   );

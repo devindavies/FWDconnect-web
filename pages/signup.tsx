@@ -3,7 +3,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import Router from "next/router";
-import initFirebase from "../services/auth/initFirebase";
+import initFirebase from "../utils/auth/initFirebase";
 import Layout from "../layout/layout";
 
 initFirebase();

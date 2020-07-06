@@ -1,14 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import logout from "../services/auth/logout";
-import Router from "next/router";
+import { useUser } from "../utils/auth/useUser";
 
-interface HeaderProps {
-  isLoggedIn?: boolean;
-}
-
-const Header: React.FC<HeaderProps> = (props) => {
-  const { isLoggedIn } = props;
+const Header = () => {
+  const { user, logout } = useUser();
   const [state, setState] = React.useState({
     isActive: false,
   });
@@ -43,7 +38,7 @@ const Header: React.FC<HeaderProps> = (props) => {
               HOME
             </a>
           </Link>
-          {!isLoggedIn ? (
+          {!user ? (
             <div className="navbar-item">
               <div className="field is-grouped">
                 <p className="control">
@@ -75,7 +70,6 @@ const Header: React.FC<HeaderProps> = (props) => {
                     onClick={async () => {
                       try {
                         await logout();
-                        Router.push("/login");
                       } catch (e) {
                         console.error(e);
                       }

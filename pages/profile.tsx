@@ -1,19 +1,11 @@
 import React from "react";
 import Router from "next/router";
-//import useSwr from "swr";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
 import Layout from "../layout/layout";
-import withAuthUser, {
-  AuthUserInfo
-} from "../services/pageWrappers/withAuthUser";
-import withAuthUserInfo from "../services/pageWrappers/withAuthUserInfo";
-
-interface ProfileProps {
-  AuthUserInfo?: AuthUserInfo;
-}
+import { useUser } from "../utils/auth/useUser";
 
 interface UserData {
   fname: string;
@@ -21,35 +13,34 @@ interface UserData {
   email: string;
 }
 
-function Profile(props: ProfileProps) {
-  const { AuthUserInfo } = props;
-  const authUser = AuthUserInfo?.AuthUser;
+function Profile() {
+  const { user } = useUser();
+
   const db = firebase.firestore();
 
   const [userData, setUserData] = React.useState<UserData>({
     fname: "",
     lname: "",
-    email: ""
+    email: "",
   });
 
   React.useEffect(() => {
-    if (!authUser) {
-      Router.push("/");
-    } else {
+    console.log(user);
+    if (user) {
       const unsubscribe = db
         .collection("users")
-        .doc(authUser.id)
-        .onSnapshot(snap => {
+        .doc(user.id)
+        .onSnapshot((snap) => {
           const newUserdata = snap.data();
           newUserdata && setUserData(newUserdata as UserData);
         });
 
       return () => unsubscribe();
     }
-  }, [db, authUser]);
+  }, [db, user]);
 
   return (
-    <Layout isLoggedIn={authUser ? true : false}>
+    <Layout>
       <div className="section">
         <h1 className="title">Profile</h1>
         <div className="container content">
@@ -91,4 +82,4 @@ function Profile(props: ProfileProps) {
   );
 }
 
-export default withAuthUser(withAuthUserInfo(Profile));
+export default Profile;
