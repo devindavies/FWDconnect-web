@@ -4,7 +4,6 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 
 import Layout from "../layout/layout";
-import withDato from "../data/datoCms";
 import initFirebase from "../utils/auth/initFirebase";
 import PostList from "../components/PostList";
 import { useUser } from "../utils/auth/useUser";
@@ -53,12 +52,12 @@ const Home: NextPage = () => {
 
   return (
     <Layout>
-      <div className="section">
+      <section className="section">
         <div className="container">
-          <h1 className="title">FWDconnect</h1>
+          <h1 className="title is-size-1">FWDconnect</h1>
           <h1>
             A simple social media app built using NextJS, Firebase, deployed on
-            Now.sh
+            Vercel
           </h1>
           {user && (
             <>
@@ -94,13 +93,18 @@ const Home: NextPage = () => {
                   </nav>
                 </div>
               </article>
-              <PostList />
             </>
           )}
         </div>
-      </div>
+      </section>
+      <section className="section">
+        <div className="container">
+          <h2 className="title">Recent Posts</h2>
+          <PostList />
+        </div>
+      </section>
     </Layout>
   );
 };
 
-export default withDato(Home);
+export default Home;

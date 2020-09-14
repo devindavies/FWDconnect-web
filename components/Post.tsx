@@ -80,62 +80,67 @@ const Post = (props: PostProps) => {
   };
 
   return (
-    <article key={props.postRef.id} className="media">
-      <figure className="media-left">
-        <p className="image is-64x64">
-          <img alt="" src="https://bulma.io/images/placeholders/128x128.png" />
-        </p>
-      </figure>
-      <div className="media-content">
-        <div className="content">
-          <p>
-            <strong>{user?.name.first}</strong>{" "}
-            <small>{props.postRef.datePosted.toDate().toUTCString()}</small>
-            <br />
-            {props.postRef.content}
-            <br />
-            <span onClick={handleLike} className="icon">
-              <i className="fas fa-heart has-text-link text-link"></i>
-            </span>
-            <small>{likes?.length}</small>
+    <>
+      <article key={props.postRef.id} className="media">
+        <figure className="media-left">
+          <p className="image is-64x64">
+            <img
+              alt=""
+              src="https://bulma.io/images/placeholders/128x128.png"
+            />
           </p>
-        </div>
-
-        <CommentList post={props.postRef.id} />
-        <article className="media">
-          <figure className="media-left">
-            <p className="image is-64x64">
-              <img
-                alt=""
-                src="https://bulma.io/images/placeholders/128x128.png"
-              />
+        </figure>
+        <div className="media-content">
+          <div className="content">
+            <p>
+              <strong>{user?.name.first}</strong>{" "}
+              <small>{props.postRef.datePosted.toDate().toUTCString()}</small>
+              <br />
+              {props.postRef.content}
+              <br />
+              <span onClick={handleLike} className="icon">
+                <i className="fas fa-heart has-text-link text-link"></i>
+              </span>
+              <small>{likes?.length}</small>
             </p>
-          </figure>
-          <div className="media-content">
-            <div className="field">
-              <p className="control">
-                <textarea
-                  name="postInput"
-                  placeholder="Leave a comment..."
-                  value={input}
-                  onChange={handleTextAreaChange}
-                  className="textarea"
-                ></textarea>
-              </p>
-            </div>
-            <nav className="level">
-              <div className="level-left">
-                <div className="level-item">
-                  <button onClick={submitComment} className="button is-info">
-                    Submit
-                  </button>
-                </div>
-              </div>
-            </nav>
           </div>
-        </article>
-      </div>
-    </article>
+
+          <CommentList post={props.postRef.id} />
+          <article className="media">
+            <figure className="media-left">
+              <p className="image is-64x64">
+                <img
+                  alt=""
+                  src="https://bulma.io/images/placeholders/128x128.png"
+                />
+              </p>
+            </figure>
+            <div className="media-content">
+              <div className="field">
+                <p className="control">
+                  <textarea
+                    name="postInput"
+                    placeholder="Leave a comment..."
+                    value={input}
+                    onChange={handleTextAreaChange}
+                    className="textarea"
+                  ></textarea>
+                </p>
+              </div>
+              <nav className="level">
+                <div className="level-left">
+                  <div className="level-item">
+                    <button onClick={submitComment} className="button is-info">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </nav>
+            </div>
+          </article>
+        </div>
+      </article>
+    </>
   );
 };
 

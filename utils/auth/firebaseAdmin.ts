@@ -1,6 +1,8 @@
 import * as admin from "firebase-admin";
 
-export const verifyIdToken = async (token: string) => {
+export const verifyIdToken = (
+  token: string
+): Promise<admin.auth.DecodedIdToken> => {
   if (!admin.apps.length) {
     admin.initializeApp({
       credential: admin.credential.cert({

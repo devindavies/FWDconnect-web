@@ -1,6 +1,6 @@
-module.exports = {
-  parser: "@typescript-eslint/parser",
-  extends: [
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
@@ -8,31 +8,31 @@ module.exports = {
     "prettier/@typescript-eslint",
     "plugin:import/typescript",
     "plugin:prettier/recommended",
-    "plugin:jsx-a11y/recommended",
+    "plugin:jsx-a11y/recommended"
   ],
-  settings: {
-    react: {
-      version: "detect",
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "plugins": ["import", "react", "react-hooks", "@typescript-eslint", "graphql"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
+    "ecmaVersion": 2020, // Allows for the parsing of modern ECMAScript features
+    "sourceType": "module" // Allows for the use of imports
   },
-  env: {
-    browser: true,
-    node: true,
-    es6: true,
-  },
-  plugins: ["import", "react", "react-hooks", "@typescript-eslint", "graphql"],
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    sourceType: "module", // Allows for the use of imports
-  },
-  rules: {
+  "rules": {
     "react/prop-types": "off",
     "no-useless-catch": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-use-before-define": ["error", { functions: false }],
+    "@typescript-eslint/no-use-before-define": ["error", { "functions": false }],
     "@typescript-eslint/camelcase": "off",
     /**'graphql/template-strings': [
         'error',
@@ -45,6 +45,6 @@ module.exports = {
     "import/no-cycle": ["warn"],
     "import/no-absolute-path": ["warn"],
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-  },
-};
+    "react-hooks/exhaustive-deps": "warn"
+  }
+}

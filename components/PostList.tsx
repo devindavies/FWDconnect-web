@@ -6,20 +6,30 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { FirebasePost } from "../types";
 import Post from "./Post";
 
-const PostList = () => {
+type PostListProps = {
+  userId?: string;
+};
+
+const PostList: React.FC<PostListProps> = () => {
   const [posts, loading, error] = useCollectionData<FirebasePost>(
     firebase.firestore().collection("posts").orderBy("datePosted", "desc"),
     {
       idField: "id",
     }
   );
-  return (
-    <>
-      {posts?.map((post) => (
-        <Post key={post.id} postRef={post} />
-      ))}
-    </>
-  );
+
+  if (posts) {
+    return (
+      <>
+        {posts.map((post) => (
+          <div key={post.id}>
+            <Post postRef={post} />
+            <hr />
+          </div>
+        ))}
+      </>
+    );
+  } else return <></>;
 };
 
 export default PostList;

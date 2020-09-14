@@ -61,7 +61,7 @@ const Header = () => {
             <div className="navbar-item">
               <div className="field is-grouped">
                 <p className="control">
-                  <Link href="/profile">
+                  <Link href={`/${user.id}`}>
                     <a className="button is-primary">Profile</a>
                   </Link>
                 </p>
