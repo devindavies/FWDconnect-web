@@ -54,11 +54,6 @@ const Home: NextPage = () => {
     <Layout>
       <section className="section">
         <div className="container">
-          <h1 className="title is-size-1">FWDconnect</h1>
-          <h1>
-            A simple social media app built using NextJS, Firebase, deployed on
-            Vercel
-          </h1>
           {user && (
             <>
               <article className="media">
@@ -85,7 +80,7 @@ const Home: NextPage = () => {
                   <nav className="level">
                     <div className="level-left">
                       <div className="level-item">
-                        <button onClick={submitPost} className="button is-info">
+                        <button onClick={submitPost} className="button is-link">
                           Submit
                         </button>
                       </div>

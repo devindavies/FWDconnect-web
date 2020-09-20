@@ -130,7 +130,7 @@ const Post = (props: PostProps) => {
               <nav className="level">
                 <div className="level-left">
                   <div className="level-item">
-                    <button onClick={submitComment} className="button is-info">
+                    <button onClick={submitComment} className="button is-link">
                       Submit
                     </button>
                   </div>

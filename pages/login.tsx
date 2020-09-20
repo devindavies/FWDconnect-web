@@ -2,7 +2,10 @@ import React from "react";
 import Layout from "../layout/layout";
 import FirebaseAuth from "../components/FirebaseAuth";
 
-export default function Login() {
+// Types
+import type { NextPage } from "next";
+
+const Login: NextPage = () => {
   return (
     <Layout>
       <div className="section">
@@ -13,4 +16,6 @@ export default function Login() {
       </div>
     </Layout>
   );
-}
+};
+
+export default Login;

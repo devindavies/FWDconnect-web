@@ -46,5 +46,6 @@
     "import/no-absolute-path": ["warn"],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
-  }
+  },
+  "ignorePatterns": "next.config.js"
 }

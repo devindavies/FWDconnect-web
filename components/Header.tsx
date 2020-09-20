@@ -1,8 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import { useUser } from "../utils/auth/useUser";
+import Logo from "../public/FWDconnect.svg";
 
-const Header = () => {
+const Header: React.FC = () => {
   const { user, logout } = useUser();
   const [state, setState] = React.useState({
     isActive: false,
@@ -13,10 +14,7 @@ const Header = () => {
       <div className="navbar-brand">
         <Link href="/">
           <a href="/" className="navbar-item">
-            {
-              //<Logo height="44" alt="New Hope Christian Chapel" />
-            }
-            <span style={{ visibility: "hidden" }}>Home</span>
+            <img alt="FWD logo" src={Logo} />
           </a>
         </Link>
         <button
@@ -33,17 +31,12 @@ const Header = () => {
 
       <div className={state.isActive ? "navbar-menu is-active" : "navbar-menu"}>
         <div className="navbar-end">
-          <Link href="/">
-            <a className="menu-item navbar-item" href="/">
-              HOME
-            </a>
-          </Link>
           {!user ? (
             <div className="navbar-item">
               <div className="field is-grouped">
                 <p className="control">
                   <Link href="/signup">
-                    <a className="menu-item navbar-item button is-primary">
+                    <a className="menu-item navbar-item button is-link">
                       Sign Up
                     </a>
                   </Link>
@@ -62,7 +55,7 @@ const Header = () => {
               <div className="field is-grouped">
                 <p className="control">
                   <Link href={`/${user.id}`}>
-                    <a className="button is-primary">Profile</a>
+                    <a className="button is-link">Profile</a>
                   </Link>
                 </p>
                 <p className="control">
@@ -74,7 +67,7 @@ const Header = () => {
                         console.error(e);
                       }
                     }}
-                    className="button is-primary"
+                    className="button is-link"
                   >
                     Log Out
                   </button>

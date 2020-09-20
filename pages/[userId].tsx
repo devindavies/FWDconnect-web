@@ -100,7 +100,7 @@ const Profile: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
                   <a>Followers</a>
                 </p>
                 <div className="panel-block">
-                  <div>
+                  <div className="container p-1">
                     <PostList userId={props.user?.id} />
                   </div>
                 </div>
